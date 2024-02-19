@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "CircularForce.generated.h"
 
+class AParticle;
+
 UCLASS()
 class FISICA_API ACircularForce : public AActor
 {
@@ -15,6 +17,15 @@ public:
 	// Sets default values for this actor's properties
 	ACircularForce();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CircularForce")
+	float Force = 1000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CircularForce")
+	bool Reverse = false;
+
+
+	TMap<AParticle*, FVector> ForceDirections;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,5 +33,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+
+	FVector GetForceDirection(AParticle* Particle);
 
 };

@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include "Math/UnrealMathUtility.h"
 #include "FieldForce.h"
+#include "CircularForce.h"
 
 // Sets default values
 AParticle::AParticle()
@@ -17,17 +18,32 @@ void AParticle::SetActiveParticle()
 {
 	position = spawnPosition;
 	ParticleActive = true;
+
+	speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed), maxSpeed);
+
+	aceleration = FVector(FMath::RandRange(0, maxAceleration), FMath::RandRange(0, maxAceleration), 0);
 }
 
 
 void AParticle::AddForceField(AFieldForce* _FieldForce)
 {
 	FieldForces.Add(_FieldForce);
+
+}
+
+void AParticle::AddCircularForce(ACircularForce* _CircularForce)
+{
+	CircularForces.Add(_CircularForce);
 }
 
 void AParticle::RemoveForceField(AFieldForce* _FieldForce)
 {
 	FieldForces.Remove(_FieldForce);
+}
+
+void AParticle::RemoveCircularForce(ACircularForce* _CircularForce)
+{
+	CircularForces.Remove(_CircularForce);
 }
 
 void AParticle::AddImpulse(FVector Impulse)
@@ -48,12 +64,12 @@ void AParticle::Init(FVector Position)
 	position = spawnPosition;
 
 
-	speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed));
+	speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed), maxSpeed);
 
-	aceleration = FVector(FMath::RandRange(0, maxAceleration), FMath::RandRange(0, maxAceleration), FMath::RandRange(0, maxAceleration));
+	aceleration = FVector(FMath::RandRange(0, maxAceleration), FMath::RandRange(0, maxAceleration), 0);
 
 
-	float scale = FMath::FRandRange(0.0f,1.0f);
+	float scale = FMath::FRandRange(0.1f,2.0f);
 
 	SetActorScale3D(FVector(scale, scale, scale));
 
@@ -76,6 +92,12 @@ void AParticle::Tick(float DeltaTime)
 			aceleration += 2 * DeltaTime * fieldForce->Force * fieldForce->Direction / mass;
 		}
 
+		for (ACircularForce* circularForce : CircularForces)
+		{
+			FVector Direction = circularForce->GetForceDirection(this);
+			aceleration += 2 * DeltaTime * circularForce->Force * Direction / (mass * Direction.Size());
+		}
+
 		SetActorLocation(position);
 
 		
@@ -84,6 +106,8 @@ void AParticle::Tick(float DeltaTime)
 		{
 			DespawnTimer = 0;
 			ParticleActive = false;
+			speed = FVector(0,0,0);
+			aceleration = FVector(0,0,0);
 
 			SetActorLocation(FVector(0, 0, 0));
 		}

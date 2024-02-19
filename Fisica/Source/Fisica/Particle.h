@@ -7,6 +7,7 @@
 #include "Particle.generated.h"
 
 class AFieldForce;
+class ACircularForce;
 
 UCLASS()
 class FISICA_API AParticle : public AActor
@@ -39,7 +40,11 @@ public:
 
 	void AddForceField(AFieldForce* _FieldForce);
 
+	void AddCircularForce(ACircularForce* _CircularForce);
+
 	void RemoveForceField(AFieldForce* _FieldForce);
+
+	void RemoveCircularForce(ACircularForce* _CircularForce);
 
 	void AddImpulse(FVector Impulse);
 
@@ -65,5 +70,7 @@ private:
 	int mass;
 
 	TArray<AFieldForce*> FieldForces;
+	TArray<ACircularForce*> CircularForces;
+
 
 };

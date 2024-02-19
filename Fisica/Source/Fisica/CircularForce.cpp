@@ -2,6 +2,7 @@
 
 
 #include "CircularForce.h"
+#include "Particle.h"
 
 // Sets default values
 ACircularForce::ACircularForce()
@@ -23,5 +24,49 @@ void ACircularForce::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	for (auto& Elem : ForceDirections)
+	{
+		AParticle* Particle = Elem.Key;
+		FVector Direction = Particle->GetActorLocation() - GetActorLocation();
+		if (Reverse)
+		{
+			Direction = -Direction;
+		}
+		Elem.Value = Direction;
+	}
+
+}
+
+void ACircularForce::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+	AParticle* Particle = Cast<AParticle>(OtherActor);
+	if (Particle)
+	{
+		FVector Direction = Particle->GetActorLocation() - GetActorLocation();
+
+		if (Reverse)
+		{
+			Direction = -Direction;
+		}
+		ForceDirections.Add(Particle, Direction);
+		Particle->AddCircularForce(this);
+	}
+}
+
+void ACircularForce::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorEndOverlap(OtherActor);
+	AParticle* Particle = Cast<AParticle>(OtherActor);
+	if (Particle)
+	{
+		ForceDirections.Remove(Particle);
+		Particle->RemoveCircularForce(this);
+	}
+}
+
+FVector ACircularForce::GetForceDirection(AParticle* Particle)
+{
+	return ForceDirections[Particle];
 }
 
