@@ -56,9 +56,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void Init(FVector Position);
+	virtual void Init(FVector Position);
 
-private:
+protected:
 
 	FVector spawnPosition;
 
