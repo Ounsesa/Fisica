@@ -28,6 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
 		int maxMass;
 
+	
+
 	bool ParticleActive = false;
 
 	void SetActiveParticle();
@@ -64,7 +66,7 @@ protected:
 	FVector speed;
 	FVector aceleration;
 
-	float DespawnTimer = 10.f;
+	float DespawnTimer;
 	int mass;
 
 	TArray<AFieldForce*> FieldForces;
