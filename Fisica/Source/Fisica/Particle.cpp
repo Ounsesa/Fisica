@@ -18,6 +18,7 @@ void AParticle::SetActiveParticle()
 {
 	position = spawnPosition;
 	ParticleActive = true;
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("A"));
 
 	speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed), maxSpeed);
 
@@ -82,6 +83,7 @@ void AParticle::Init(FVector Position)
 void AParticle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (ParticleActive)
 	{
 
