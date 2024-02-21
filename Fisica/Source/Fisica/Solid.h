@@ -39,6 +39,10 @@ public:
 
 	float GetRadius() { return radius; }
 
+	FVector GetSpeed() { return speed; }
+
+	void SetSpeed(FVector newSpeed) { speed = newSpeed; }
+
 	void AddForceField(AFieldForce* _FieldForce);
 
 	void AddCircularForce(ACircularForce* _CircularForce);
@@ -51,6 +55,7 @@ public:
 	
 	void Init(FVector Position, FVector Speed, FVector Aceleration);
 
+	
 
 protected:
 	// Called when the game starts or when spawned

@@ -61,11 +61,25 @@ void ASolidController::CheckColisions()
 		{
 			ASolid* Solid2 = SolidList[index2];
 
-			float Distance = (Solid1->GetActorLocation() - Solid2->GetActorLocation()).Size();
+			FVector Director = Solid1->GetActorLocation() - Solid2->GetActorLocation();
+			float Distance = (Director).Size();
 			float SumOfRadius = Solid1->GetRadius() + Solid2->GetRadius();
 			//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, FString::Printf(TEXT("Distance: %f. Sum: %f"), Distance, SumOfRadius));
 			if (Distance <= SumOfRadius)
 			{
+				float Speed1 = Solid1->GetSpeed().Size();
+				float Speed2 = Solid2->GetSpeed().Size();
+				float mass1 = Solid1->GetMass();
+				float mass2 = Solid2->GetMass();
+
+				float newSpeed2 = (-Speed2 * (mass1 - mass2) + 2 * mass1 * Speed1) / (mass1 + mass2);
+				float newSpeed1 = (newSpeed2 + Speed2 - Speed1);
+
+				Director.Normalize();
+				Solid1->SetSpeed(Director * newSpeed1);
+
+				Solid2->SetSpeed(-Director * newSpeed2);
+
 				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("A"));
 			}
 		}
