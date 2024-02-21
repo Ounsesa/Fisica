@@ -25,31 +25,6 @@ void AParticle::SetActiveParticle()
 }
 
 
-void AParticle::AddForceField(AFieldForce* _FieldForce)
-{
-	FieldForces.Add(_FieldForce);
-
-}
-
-void AParticle::AddCircularForce(ACircularForce* _CircularForce)
-{
-	CircularForces.Add(_CircularForce);
-}
-
-void AParticle::RemoveForceField(AFieldForce* _FieldForce)
-{
-	FieldForces.Remove(_FieldForce);
-}
-
-void AParticle::RemoveCircularForce(ACircularForce* _CircularForce)
-{
-	CircularForces.Remove(_CircularForce);
-}
-
-void AParticle::AddImpulse(FVector Impulse)
-{
-	speed += Impulse;
-}
 
 // Called when the game starts or when spawned
 void AParticle::BeginPlay()
@@ -81,25 +56,10 @@ void AParticle::Init(FVector Position)
 // Called every frame
 void AParticle::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
 	if (ParticleActive)
 	{
 
-		position += speed * DeltaTime;
-		speed += aceleration * DeltaTime;
-		for (AFieldForce* fieldForce : FieldForces)
-		{
-			aceleration += 2 * DeltaTime * fieldForce->Force * fieldForce->Direction / mass;
-		}
-
-		for (ACircularForce* circularForce : CircularForces)
-		{
-			FVector Direction = circularForce->GetForceDirection(this);
-			aceleration += 2 * DeltaTime * circularForce->Force * Direction / (mass * Direction.Size());
-		}
-
-		SetActorLocation(position);
-
+		Super::Tick(DeltaTime);
 		
 		DespawnTimer += DeltaTime;
 		if (DespawnTimer >= TimeBeforeDespawn)

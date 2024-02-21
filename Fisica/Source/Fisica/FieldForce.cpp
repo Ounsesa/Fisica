@@ -2,7 +2,7 @@
 
 
 #include "FieldForce.h"
-#include "Particle.h"
+#include "Solid.h"
 
 // Sets default values
 AFieldForce::AFieldForce()
@@ -28,19 +28,19 @@ void AFieldForce::Tick(float DeltaTime)
 
 void AFieldForce::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	AParticle* Particle = Cast<AParticle>(OtherActor);
-	if (Particle)
+	ASolid* Solid = Cast<ASolid>(OtherActor);
+	if (Solid)
 	{
-		Particle->AddForceField(this);
+		Solid->AddForceField(this);
 	}
 }
 
 void AFieldForce::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	AParticle* Particle = Cast<AParticle>(OtherActor);
-	if (Particle)
+	ASolid* Solid = Cast<ASolid>(OtherActor);
+	if (Solid)
 	{
-		Particle->RemoveForceField(this);
+		Solid->RemoveForceField(this);
 	}
 }
 

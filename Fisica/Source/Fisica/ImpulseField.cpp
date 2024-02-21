@@ -2,7 +2,7 @@
 
 
 #include "ImpulseField.h"
-#include "Particle.h"
+#include "Solid.h"
 
 // Sets default values
 AImpulseField::AImpulseField()
@@ -28,10 +28,10 @@ void AImpulseField::Tick(float DeltaTime)
 
 void AImpulseField::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	AParticle* Particle = Cast<AParticle>(OtherActor);
-	if (Particle)
+	ASolid* Solid = Cast<ASolid>(OtherActor);
+	if (Solid)
 	{
-		Particle->AddImpulse(Impulse*Direction);
+		Solid->AddImpulse(Impulse*Direction);
 	}
 }
 

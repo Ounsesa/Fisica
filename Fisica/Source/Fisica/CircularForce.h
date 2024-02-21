@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CircularForce.generated.h"
 
-class AParticle;
+class ASolid;
 
 UCLASS()
 class FISICA_API ACircularForce : public AActor
@@ -24,7 +24,7 @@ public:
 	bool Reverse = false;
 
 
-	TMap<AParticle*, FVector> ForceDirections;
+	TMap<ASolid*, FVector> SolidForceDirections;
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,6 +38,6 @@ public:
 
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
-	FVector GetForceDirection(AParticle* Particle);
+	FVector GetForceDirection(ASolid* Particle);
 
 };

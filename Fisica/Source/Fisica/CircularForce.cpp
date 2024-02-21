@@ -2,7 +2,7 @@
 
 
 #include "CircularForce.h"
-#include "Particle.h"
+#include "Solid.h"
 
 // Sets default values
 ACircularForce::ACircularForce()
@@ -24,10 +24,10 @@ void ACircularForce::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	for (auto& Elem : ForceDirections)
+	for (auto& Elem : SolidForceDirections)
 	{
-		AParticle* Particle = Elem.Key;
-		FVector Direction = Particle->GetActorLocation() - GetActorLocation();
+		ASolid* Solid = Elem.Key;
+		FVector Direction = Solid->GetActorLocation() - GetActorLocation();
 		if (Reverse)
 		{
 			Direction = -Direction;
@@ -40,33 +40,38 @@ void ACircularForce::Tick(float DeltaTime)
 void ACircularForce::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
-	AParticle* Particle = Cast<AParticle>(OtherActor);
-	if (Particle)
+
+
+	ASolid* Solid = Cast<ASolid>(OtherActor);
+	if (Solid)
 	{
-		FVector Direction = Particle->GetActorLocation() - GetActorLocation();
+		FVector Direction = Solid->GetActorLocation() - GetActorLocation();
 
 		if (Reverse)
 		{
 			Direction = -Direction;
 		}
-		ForceDirections.Add(Particle, Direction);
-		Particle->AddCircularForce(this);
+		SolidForceDirections.Add(Solid, Direction);
+		Solid->AddCircularForce(this);
 	}
 }
 
 void ACircularForce::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorEndOverlap(OtherActor);
-	AParticle* Particle = Cast<AParticle>(OtherActor);
-	if (Particle)
+
+
+	ASolid* Solid = Cast<ASolid>(OtherActor);
+	if (Solid)
 	{
-		ForceDirections.Remove(Particle);
-		Particle->RemoveCircularForce(this);
+		SolidForceDirections.Remove(Solid);
+		Solid->RemoveCircularForce(this);
 	}
 }
 
-FVector ACircularForce::GetForceDirection(AParticle* Particle)
+
+FVector ACircularForce::GetForceDirection(ASolid* Particle)
 {
-	return ForceDirections[Particle];
+	return SolidForceDirections[Particle];
 }
 

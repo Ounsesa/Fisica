@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Solid.h"
 #include "Particle.generated.h"
 
 class AFieldForce;
 class ACircularForce;
 
 UCLASS()
-class FISICA_API AParticle : public AActor
+class FISICA_API AParticle : public ASolid
 {
 	GENERATED_BODY()
 	
@@ -21,12 +22,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
 		float TimeBeforeDespawn;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
-		int maxSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
-		int maxAceleration;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
-		int maxMass;
 
 	
 
@@ -34,19 +29,7 @@ public:
 
 	void SetActiveParticle();
 
-	void AddForce(FVector newForce);
-
-	int GetMass() { return mass; }
-
-	void AddForceField(AFieldForce* _FieldForce);
-
-	void AddCircularForce(ACircularForce* _CircularForce);
-
-	void RemoveForceField(AFieldForce* _FieldForce);
-
-	void RemoveCircularForce(ACircularForce* _CircularForce);
-
-	void AddImpulse(FVector Impulse);
+	virtual void Init(FVector Position);
 
 protected:
 	// Called when the game starts or when spawned
@@ -56,21 +39,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void Init(FVector Position);
 
 protected:
 
 	FVector spawnPosition;
 
-	FVector position;
-	FVector speed;
-	FVector aceleration;
-
 	float DespawnTimer;
-	int mass;
-
-	TArray<AFieldForce*> FieldForces;
-	TArray<ACircularForce*> CircularForces;
-
-
 };
