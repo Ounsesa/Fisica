@@ -44,6 +44,7 @@ void ASolid::Init(FVector Position, FVector Speed, FVector Aceleration)
 
 	//speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed), FMath::RandRange(-maxSpeed, maxSpeed));
 	position = Position;
+	SetActorLocation(position);
 	//speed = FVector(FMath::RandRange(-maxSpeed, maxSpeed), 0, 0);
 	speed = Speed;
 
