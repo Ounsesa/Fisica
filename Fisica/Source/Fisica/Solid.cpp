@@ -50,6 +50,8 @@ void ASolid::Init(FVector Position, FVector Speed, FVector Aceleration)
 
 	aceleration = Aceleration;
 
+	float scale = FMath::FRandRange(0.1f, 2.0f);
+	radius *= scale;
 
 	SetActorScale3D(FVector(radius, radius, radius)/EditorRadius);
 

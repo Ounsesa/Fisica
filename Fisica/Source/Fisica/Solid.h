@@ -33,7 +33,8 @@ public:
 
 	
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Particle)
+		int mass;
 	
 	int GetMass() { return mass; }
 
@@ -69,7 +70,6 @@ public:
 	FVector speed;
 	FVector aceleration;
 
-	int mass;
 
 	float EditorRadius = 50;
 

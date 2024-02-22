@@ -82,7 +82,6 @@ void ASolidController::CheckColisions()
 
 				Solid2->SetSpeed(-Director * newSpeed2);
 
-				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("A"));
 			}
 		}
 	}
