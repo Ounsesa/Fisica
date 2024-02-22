@@ -34,8 +34,10 @@ void ASolidController::Tick(float DeltaTime)
 void ASolidController::InitSolidObjects()
 {
 	FVector Velocity = FVector(FMath::RandRange(-MaxSpeed, MaxSpeed), FMath::RandRange(-MaxSpeed, MaxSpeed), FMath::RandRange(-MaxSpeed, MaxSpeed));
+	FVector Space = Velocity;
+	Space.Normalize();
 	FVector Position = GetActorLocation();
-	FVector Position2 = Position + Velocity * DistanceBetweenSolids;
+	FVector Position2 = Position + Space * DistanceBetweenSolids;
 	for (int index = 0; index < NumSolidObjects; index++)
 	{
 		ASolid* Solid = GetWorld()->SpawnActor<ASolid>(SolidActor);
